@@ -21,14 +21,18 @@ public class FolderTest {
     }
 
     @After
-    public void tearDown() throws Exception {
-        Arrays.asList(new File(fullPath.toString()).listFiles())
-                .forEach(each -> {
-                    Arrays.asList(each.listFiles())
-                            .forEach(item -> item.delete());
-                    each.delete();
-                });
-        Files.delete(fullPath);
+    public void tearDown() {
+        File folder = new File(fullPath.toString());
+        File[] files = folder.listFiles();
+        if(files != null) {
+            Arrays.asList(files)
+                    .forEach(each -> {
+                        Arrays.asList(each.listFiles())
+                                .forEach(item -> item.delete());
+                        each.delete();
+                    });
+        }
+        folder.delete();
     }
 
     @Test
@@ -50,5 +54,12 @@ public class FolderTest {
         Folder folder = new Folder(fullPath + "/foo/bar");
 
         assertThat(folder.create().exists()).isTrue();
+    }
+
+    @Test
+    public void shouldDelete() {
+        Folder folder = new Folder(fullPath.toString());
+
+        assertThat(folder.delete().exists()).isFalse();
     }
 }

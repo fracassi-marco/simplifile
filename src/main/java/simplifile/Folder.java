@@ -4,18 +4,23 @@ import java.io.File;
 
 public class Folder {
 
-    private File file;
+    private File folder;
 
     public Folder(String fullPath) {
-        file = new File(fullPath);
+        folder = new File(fullPath);
     }
 
     public boolean exists() {
-        return file.exists();
+        return folder.exists();
     }
 
     public Folder create() {
-        file.mkdirs();
+        folder.mkdirs();
+        return this;
+    }
+
+    public Folder delete() {
+        folder.delete();
         return this;
     }
 }
