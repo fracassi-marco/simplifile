@@ -13,4 +13,9 @@ public class Folder {
     public boolean exists() {
         return file.exists();
     }
+
+    public Folder create() {
+        file.mkdir();
+        return this;
+    }
 }
