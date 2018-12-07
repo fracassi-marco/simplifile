@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,17 +22,7 @@ public class FolderTest {
 
     @After
     public void tearDown() {
-        File folder = new File(fullPath.toString());
-        File[] files = folder.listFiles();
-        if(files != null) {
-            Arrays.asList(files)
-                    .forEach(each -> {
-                        Arrays.asList(each.listFiles())
-                                .forEach(item -> item.delete());
-                        each.delete();
-                    });
-        }
-        folder.delete();
+        new Folder(fullPath.toString()).delete();
     }
 
     @Test
