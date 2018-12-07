@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -57,9 +58,28 @@ public class FolderTest {
     }
 
     @Test
-    public void shouldDelete() {
+    public void shouldBeDelete() {
         Folder folder = new Folder(fullPath.toString());
 
         assertThat(folder.delete().exists()).isFalse();
+    }
+
+    @Test
+    public void shouldBeDeletedAlsoIfHasSubfolder() {
+        Folder folder = new Folder(fullPath.toString());
+        Folder subfolder = new Folder(fullPath + "/foo").create();
+
+        assertThat(folder.delete().exists()).isFalse();
+        assertThat(subfolder.exists()).isFalse();
+    }
+
+    @Test
+    public void shouldBeDeletedAlsoIfContainsFile() throws IOException {
+        Folder folder = new Folder(fullPath.toString());
+        File file = new File(fullPath + "/baz.txt");
+        file.createNewFile();
+
+        assertThat(folder.delete().exists()).isFalse();
+        assertThat(file.exists()).isFalse();
     }
 }

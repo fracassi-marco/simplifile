@@ -1,6 +1,7 @@
 package simplifile;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class Folder {
 
@@ -20,7 +21,16 @@ public class Folder {
     }
 
     public Folder delete() {
-        folder.delete();
+        delete(folder);
+
         return this;
+    }
+
+    private void delete(File item) {
+        File[] files = item.listFiles();
+        if(files != null) {
+            Arrays.asList(files).forEach(this::delete);
+        }
+        item.delete();
     }
 }
