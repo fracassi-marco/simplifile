@@ -15,7 +15,7 @@ public class Folder {
     }
 
     public Folder create() {
-        file.mkdir();
+        file.mkdirs();
         return this;
     }
 }

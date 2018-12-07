@@ -22,8 +22,13 @@ public class FolderTest {
 
     @After
     public void tearDown() throws Exception {
-        Arrays.asList(new File(fullPath.toString()).listFiles()).forEach(each -> each.delete());
-        Files.deleteIfExists(fullPath);
+        Arrays.asList(new File(fullPath.toString()).listFiles())
+                .forEach(each -> {
+                    Arrays.asList(each.listFiles())
+                            .forEach(item -> item.delete());
+                    each.delete();
+                });
+        Files.delete(fullPath);
     }
 
     @Test
@@ -35,7 +40,14 @@ public class FolderTest {
 
     @Test
     public void shouldCreate() {
-        Folder folder = new Folder(fullPath + "/any");
+        Folder folder = new Folder(fullPath + "/foo");
+
+        assertThat(folder.create().exists()).isTrue();
+    }
+
+    @Test
+    public void shouldCreateRecursively() {
+        Folder folder = new Folder(fullPath + "/foo/bar");
 
         assertThat(folder.create().exists()).isTrue();
     }
