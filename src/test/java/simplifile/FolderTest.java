@@ -65,10 +65,25 @@ public class FolderTest {
     @Test
     public void shouldBeDeletedAlsoIfContainsFile() throws IOException {
         Folder folder = new Folder(fullPath.toString());
-        File file = new File(fullPath + "/baz.txt");
-        file.createNewFile();
+        File file = create("baz.txt");
 
         assertThat(folder.delete().exists()).isFalse();
         assertThat(file.exists()).isFalse();
+    }
+
+    @Test
+    public void shouldListFiles() throws IOException {
+        create("foo.txt");
+        create("bar.txt");
+        Folder folder = new Folder(fullPath.toString());
+
+        assertThat(folder.files()).hasSize(2);
+    }
+
+    private File create(String fileName) throws IOException {
+        File file = new File(fullPath + "/" + fileName);
+        file.createNewFile();
+
+        return file;
     }
 }

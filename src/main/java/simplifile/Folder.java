@@ -2,6 +2,8 @@ package simplifile;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Folder {
 
@@ -32,5 +34,11 @@ public class Folder {
             Arrays.asList(files).forEach(this::delete);
         }
         item.delete();
+    }
+
+    public List<DiskFile> files() {
+        return Arrays.stream(folder.listFiles())
+                .map(each -> new DiskFile(each.getAbsolutePath()))
+                .collect(Collectors.toList());
     }
 }
