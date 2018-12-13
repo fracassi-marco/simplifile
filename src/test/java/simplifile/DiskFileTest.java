@@ -16,13 +16,12 @@ public class DiskFileTest {
 
     @Before
     public void setUp() throws Exception {
-        fullPath = Files.createTempFile("simplifile", ".txt");
         folderFullPath = Files.createTempDirectory("simplifile");
+        fullPath = Files.createFile(folderFullPath.resolve("foo.txt"));
     }
 
     @After
     public void tearDown() {
-        fullPath.toFile().delete();
         new Folder(folderFullPath.toString()).delete();
     }
 
@@ -36,6 +35,13 @@ public class DiskFileTest {
     @Test
     public void shouldCreate() {
         DiskFile file = new DiskFile(folderFullPath.resolve("baz.txt").toString());
+
+        assertThat(file.create().exists()).isTrue();
+    }
+
+    @Test
+    public void shouldCreateParentsFolder() {
+        DiskFile file = new DiskFile(folderFullPath.resolve("foo").resolve("baz.txt").toString());
 
         assertThat(file.create().exists()).isTrue();
     }
