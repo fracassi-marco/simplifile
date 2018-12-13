@@ -83,9 +83,19 @@ public class FolderTest {
     @Test
     public void shouldManageSubfolder() {
         Folder folder = new Folder(fullPath.toString());
-        Folder subfolder = folder.subfolder("baz").create();
 
-        assertThat(subfolder.exists()).isTrue();
+        Folder subfolder = folder.subfolder("baz");
+
+        assertThat(subfolder.create().exists()).isTrue();
+    }
+
+    @Test
+    public void shouldManageFile() {
+        Folder folder = new Folder(fullPath.toString());
+
+        DiskFile subfolder = folder.file("foo.txt");
+
+        assertThat(subfolder.create().exists()).isTrue();
     }
 
     private File create(String fileName) throws IOException {

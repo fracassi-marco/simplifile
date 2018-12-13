@@ -43,6 +43,14 @@ public class Folder {
     }
 
     public Folder subfolder(String name) {
-        return new Folder(folder.toPath().resolve(name).toString());
+        return new Folder(completePathWith(name));
+    }
+
+    public DiskFile file(String name) {
+        return new DiskFile(completePathWith(name));
+    }
+
+    private String completePathWith(String name) {
+        return folder.toPath().resolve(name).toString();
     }
 }
