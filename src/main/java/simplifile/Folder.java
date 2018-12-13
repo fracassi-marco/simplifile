@@ -41,4 +41,8 @@ public class Folder {
                 .map(each -> new DiskFile(each.getAbsolutePath()))
                 .collect(Collectors.toList());
     }
+
+    public Folder subfolder(String name) {
+        return new Folder(folder.toPath().resolve(name).toString());
+    }
 }

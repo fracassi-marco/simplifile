@@ -80,6 +80,14 @@ public class FolderTest {
         assertThat(folder.files()).hasSize(2);
     }
 
+    @Test
+    public void shouldManageSubfolder() {
+        Folder folder = new Folder(fullPath.toString());
+        Folder subfolder = folder.subfolder("baz").create();
+
+        assertThat(subfolder.exists()).isTrue();
+    }
+
     private File create(String fileName) throws IOException {
         File file = new File(fullPath + "/" + fileName);
         file.createNewFile();
