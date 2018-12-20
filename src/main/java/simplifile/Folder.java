@@ -1,8 +1,10 @@
 package simplifile;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Folder {
@@ -30,14 +32,14 @@ public class Folder {
 
     private void delete(File item) {
         File[] files = item.listFiles();
-        if(files != null) {
+        if (files != null) {
             Arrays.asList(files).forEach(this::delete);
         }
         item.delete();
     }
 
     public List<DiskFile> files() {
-        return Arrays.stream(folder.listFiles())
+        return Arrays.stream(folder.listFiles(File::isFile))
                 .map(each -> new DiskFile(each.getAbsolutePath()))
                 .collect(Collectors.toList());
     }
@@ -52,5 +54,11 @@ public class Folder {
 
     private String completePathWith(String name) {
         return folder.toPath().resolve(name).toString();
+    }
+
+    public List<Folder> subfolders() {
+        return Arrays.stream(folder.listFiles(File::isDirectory))
+                .map(each -> new Folder(each.getAbsolutePath()))
+                .collect(Collectors.toList());
     }
 }

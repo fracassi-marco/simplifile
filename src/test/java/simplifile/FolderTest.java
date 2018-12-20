@@ -4,8 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -63,7 +61,7 @@ public class FolderTest {
     }
 
     @Test
-    public void shouldBeDeletedAlsoIfContainsFile() throws IOException {
+    public void shouldBeDeletedAlsoIfContainsFile() {
         Folder folder = new Folder(fullPath.toString());
         DiskFile file = folder.file("baz.txt").create();
 
@@ -72,10 +70,11 @@ public class FolderTest {
     }
 
     @Test
-    public void shouldListFiles() throws IOException {
+    public void shouldListFiles() {
         Folder folder = new Folder(fullPath.toString());
         folder.file("foo.txt").create();
         folder.file("bar.txt").create();
+        folder.subfolder("baz").create();
 
         assertThat(folder.files()).hasSize(2);
     }
@@ -96,5 +95,15 @@ public class FolderTest {
         DiskFile subfolder = folder.file("foo.txt");
 
         assertThat(subfolder.create().exists()).isTrue();
+    }
+
+    @Test
+    public void shouldListSubfolders() {
+        Folder folder = new Folder(fullPath.toString());
+        folder.subfolder("foo").create();
+        folder.subfolder("bar").create();
+        folder.file("baz.txt").create();
+
+        assertThat(folder.subfolders()).hasSize(2);
     }
 }
